@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Адм. право">
+<meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1B201D" media="(prefers-color-scheme: dark)">
+<title>Билеты по административному праву</title>
+<style>
+:root{
+  --bg:#F4F1EA;--surface:#FBF9F4;--ink:#2F3A33;--muted:#6E7A71;--line:#E4DED2;
+  --sage:#6F9179;--sage-soft:#DCE6DC;--blue:#6F8CA6;--blue-soft:#DEE6EE;
+  --rose:#BF7B6E;--rose-soft:#F3E1DB;--mark:#E9DDB8;--shadow:0 6px 24px rgba(60,70,60,.08);
+  --sage-a:#E3EBE2;--sage-b:#CDDCCF;--sand-a:#F1E8D8;--sand-b:#E3D3B6;--mist-a:#E2E9F0;--mist-b:#CBD8E4;
+  --rosy-a:#F3E4DF;--rosy-b:#E6CCC4;--lav-a:#E9E5F0;--lav-b:#D6CFE3;--bub:#FFFFFFCC;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#1B201D;--surface:#242A26;--ink:#E8E6DF;--muted:#9AA49C;--line:#343B36;
+  --sage:#93B39B;--sage-soft:#2C3830;--blue:#93ABC2;--blue-soft:#283139;
+  --rose:#D59A8E;--rose-soft:#3A2C29;--mark:#4A4330;--shadow:0 6px 24px rgba(0,0,0,.3);
+  --sage-a:#26302A;--sage-b:#2F3D33;--sand-a:#2E2A23;--sand-b:#3A3428;--mist-a:#242B32;--mist-b:#2C3742;
+  --rosy-a:#30272A;--rosy-b:#3D2F30;--lav-a:#2A2730;--lav-b:#353040;--bub:#FFFFFF1F;
+}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;min-height:100dvh;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);-webkit-text-size-adjust:100%}
+h1,h2,h3,.serif{font-family:ui-serif,"New York",Georgia,serif;font-weight:600;letter-spacing:-.01em}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
+#app{max-width:560px;margin:0 auto;padding:12px 16px 120px}
+.screen{animation:in .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+.top{display:flex;align-items:center;gap:10px;min-height:44px;margin-bottom:8px}
+.back{width:44px;height:44px;border-radius:50%;background:var(--surface);box-shadow:var(--shadow);font-size:22px;display:grid;place-items:center}
+.top .t{flex:1;font-weight:600;font-size:16px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:var(--sage-soft);color:var(--ink);font-size:14px;font-weight:600}
+.hero h1{font-size:32px;line-height:1.1;margin:18px 0 6px}
+.hero p{color:var(--muted);margin:0 0 18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat{background:var(--surface);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:22px;font-family:ui-serif,Georgia,serif}
+.stat span{font-size:12.5px;color:var(--muted)}
+.modes{display:grid;gap:12px}
+.mode{display:flex;align-items:center;gap:14px;text-align:left;background:var(--surface);border-radius:22px;padding:16px;box-shadow:var(--shadow);
+  transition:transform .2s;animation:in .5s both;animation-delay:calc(var(--i)*70ms)}
+.mode:active{transform:scale(.98)}
+.mode .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:26px;flex:none}
+.mode b{display:block;font-size:18px}
+.mode small{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tk{aspect-ratio:1;border-radius:18px;background:var(--surface);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  animation:in .4s both;animation-delay:calc(var(--i)*25ms)}
+.tk b{font-size:22px;font-family:ui-serif,Georgia,serif}
+.tk small{font-size:12px;color:var(--muted)}
+.tk.pass{background:var(--sage-soft)}.tk.fail{background:var(--rose-soft)}
+.dots{display:flex;gap:5px;flex-wrap:wrap;margin:4px 0 12px}
+.dots i{flex:1;min-width:10px;height:6px;border-radius:3px;background:var(--line);transition:background .3s}
+.dots i.ok{background:var(--sage)}.dots i.no{background:var(--rose)}.dots i.cur{background:var(--blue)}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:4px 0 12px}
+.bar i{display:block;height:100%;background:var(--sage);transition:width .4s}
+.card{background:var(--surface);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.scene{display:block;width:100%;height:auto}
+.qbody{padding:14px 16px 16px}
+.topic{font-size:13px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.q{font-size:20px;line-height:1.3;margin:6px 0 0}
+.quote{margin:10px 0 0;padding:12px 14px;border-left:3px solid var(--sage);background:var(--bg);border-radius:0 14px 14px 0;font-size:16px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{text-align:left;padding:14px 16px;border-radius:18px;background:var(--surface);box-shadow:var(--shadow);font-size:16px;line-height:1.4;
+  border:2px solid transparent;transition:background .25s,border-color .25s,transform .15s,opacity .25s;animation:in .4s both;animation-delay:calc(120ms + var(--i)*60ms)}
+.opt:active{transform:scale(.985)}
+.opt.ok{background:var(--sage-soft);border-color:var(--sage)}
+.opt.no{background:var(--rose-soft);border-color:var(--rose);animation:shake .4s}
+.opt.dim{opacity:.55}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.fb{margin-top:14px;padding:16px;border-radius:22px;animation:in .4s both}
+.fb.ok{background:var(--sage-soft)}.fb.no{background:var(--rose-soft)}
+.fb h3{margin:0 0 6px;font-size:20px}
+.fb p{margin:8px 0}
+.fb h4{margin:14px 0 4px;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+mark{background:var(--mark);color:inherit;border-radius:4px;padding:0 3px}
+s{color:var(--rose);text-decoration-thickness:2px}
+.mn{background:var(--surface);border-radius:14px;padding:10px 12px;font-size:15px}
+details{margin-top:10px;background:var(--surface);border-radius:14px;padding:10px 12px}
+summary{font-weight:600;cursor:pointer}
+.th p{font-size:15px}
+.next{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:linear-gradient(transparent,var(--bg) 30%);display:flex;justify-content:center;animation:up .35s both}
+@keyframes up{from{transform:translateY(100%)}}
+.btn{width:100%;max-width:528px;padding:16px;border-radius:18px;background:var(--ink);color:var(--bg);font-weight:600;font-size:17px;box-shadow:var(--shadow)}
+.btn.soft{background:var(--surface);color:var(--ink)}
+.res{text-align:center;padding:24px 8px}
+.res .big{font-size:64px;font-family:ui-serif,Georgia,serif;margin:8px 0}
+.res .btn{margin-top:10px}
+.empty{text-align:center;color:var(--muted);padding:40px 12px}
+/* конспект */
+.flip{perspective:1200px;margin-bottom:14px;animation:in .45s both;animation-delay:calc(var(--i)*40ms)}
+.flip .in{display:grid;transition:transform .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.face.f{display:flex;flex-direction:column;justify-content:center}
+.face.b{transform:rotateY(180deg);padding:16px}
+.face h3{margin:0;font-size:19px;line-height:1.25}
+.face .hint{font-size:13px;color:var(--muted);margin-top:4px}
+.face .term{margin:0 0 12px;font-size:15px}
+.face .term b{display:block;font-size:16px;margin-bottom:2px}
+.face .term .mn{margin-top:6px;font-size:14px}
+/* сцены */
+.ln{stroke:var(--muted);stroke-opacity:.35;stroke-width:1.5;stroke-dasharray:4 5;fill:none;animation:dash 6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-90}}
+.road{stroke:var(--bub);stroke-width:14;fill:none;stroke-linecap:round}
+.blob{animation:drift 14s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+@keyframes drift{to{transform:translate(18px,-10px) scale(1.15)}}
+.fl{animation:float 4.5s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes float{50%{transform:translateY(-4px)}}
+.bub{fill:var(--bub)}
+.em{text-anchor:middle;dominant-baseline:central}
+.lb{text-anchor:middle;font:600 10.5px -apple-system,system-ui,sans-serif;fill:var(--ink)}
+.halo{fill:none;stroke:var(--blue);stroke-width:2.5;opacity:0}
+.pt{transition:opacity .5s}
+.hl .pt{opacity:.38}
+.hl .pt.on{opacity:1}
+.pt.on .halo{opacity:1;animation:pulse 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.pt.on .bub{fill:var(--surface)}
+@keyframes pulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.tile{fill:var(--bub)}
+/* пасхалка */
+.egg{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 70%,transparent);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);animation:fade .5s both;overflow:hidden}
+@keyframes fade{from{opacity:0}}
+.egg .msg{text-align:center;padding:24px;animation:pop .9s cubic-bezier(.2,1.4,.4,1) both .1s}
+@keyframes pop{from{opacity:0;transform:scale(.6)}}
+.egg .msg h2{font-size:44px;line-height:1.1;margin:0 0 12px;color:var(--rose)}
+.egg .msg p{color:var(--muted);margin:0}
+.heart{position:absolute;bottom:-40px;font-size:24px;animation:rise linear forwards;opacity:.85}
+@keyframes rise{to{transform:translateY(-115dvh) rotate(25deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="data.js"></script>
+<script>
+const app = document.getElementById('app');
+const KEY = 'ap-tickets-v1';
+const fresh = () => ({wrong:{}, best:{}, seen:{}, streak:0, mar:null});
+let S; try { S = Object.assign(fresh(), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = fresh(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+
+// ---------- вопросы из данных ----------
+const SLOT = /\{([^}]+)\}/g;
+function build(d) {
+  const slots = [...d.matchAll(SLOT)].map(m => m[1].split('|'));
+  const fill = (pick, wrap) => { let k = 0; return d.replace(SLOT, (_, s) => { const a = s.split('|'), i = k++;
+    return pick && pick[0] === i ? a[pick[1]] : wrap ? `<mark>${a[0]}</mark>` : a[0]; }); };
+  const pairs = [], maxA = Math.max(...slots.map(s => s.length));
+  for (let j = 1; j < maxA; j++) slots.forEach((s, i) => { if (s[j]) pairs.push([i, j]); }); // сначала разные слоты
+  return { correct: fill(), marked: fill(null, true),
+    wrong: pairs.slice(0, 3).map(p => ({ text: fill(p), was: slots[p[0]][0], now: slots[p[0]][p[1]] })) };
+}
+const TERMS = [], Q = [], QBY = {};
+T.forEach((t, ti) => t[3].forEach((r, ri) => TERMS.push({ ti, ri, name: r[0], v: build(r[1]), m: r[2], p: r[3] })));
+TERMS.forEach(term => ['a', 'b'].forEach(type => { const q = { id: `${term.ti}.${term.ri}.${type}`, type, term }; Q.push(q); QBY[q.id] = q; }));
+const byTopic = ti => TERMS.filter(x => x.ti === ti);
+// self-check: у каждого вопроса 4 разных варианта
+Q.forEach(q => { const o = opts(q).map(x => x.text); console.assert(new Set(o).size === 4, 'варианты повторяются', q.id); });
+
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function shuffle(a, r = Math.random) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const TICKET = 12;
+const TICKETS = (() => { const s = shuffle(Q.map(q => q.id), rng(20261115)), out = [];
+  for (let i = 0; i < s.length; i += TICKET) out.push(s.slice(i, i + TICKET)); return out; })();
+
+function opts(q) {
+  const t = q.term;
+  if (q.type === 'a') return [{ text: t.v.correct, ok: true }, ...t.v.wrong.map(w => ({ text: w.text, w }))];
+  const others = [...byTopic(t.ti), ...byTopic((t.ti + 1) % T.length)].filter(x => x !== t).slice(0, 3);
+  return [{ text: t.name, ok: true }, ...others.map(o => ({ text: o.name, other: o }))];
+}
+
+// ---------- сцены ----------
+const W = 340, H = 196, HUES = ['sage', 'sand', 'mist', 'rosy', 'lav'];
+const LAY = {
+  ring: n => [[170, 92], ...Array.from({ length: n - 1 }, (_, k) => { const a = -Math.PI / 2 + 2 * Math.PI * k / (n - 1); return [170 + 125 * Math.cos(a), 90 + 62 * Math.sin(a)]; })],
+  tree: n => [[170, 36], ...Array.from({ length: n - 1 }, (_, k) => [40 + 260 * (k + .5) / (n - 1), n >= 5 ? 112 + (k % 2) * 40 : 134])],
+  road: n => Array.from({ length: n }, (_, k) => [54 + 232 * k / (n - 1), k % 2 ? 128 : 62]),
+  ladder: n => Array.from({ length: n }, (_, k) => [40 + 260 * k / (n - 1), 150 - 108 * k / (n - 1)]),
+  pyramid: n => { const out = []; let row = 1, left = n, y = 36; while (left > 0) { const c = Math.min(row, left);
+    for (let k = 0; k < c; k++) out.push([170 + (k - (c - 1) / 2) * (row === 1 ? 0 : 230 / Math.max(c - 1, 1) * Math.min(1, (c - 1) / 2.2 + .35)), y]);
+    left -= c; row++; y += 58; } return out; },
+  puzzle: n => [[170, 98], [78, 50], [262, 50], [78, 142], [262, 142]].slice(0, n),
+};
+function scene(ti, hl) {
+  const [, lay, parts] = T[ti], pos = LAY[lay](parts.length), hue = HUES[ti % 5], r = rng(ti + 7);
+  let deco = '';
+  if (lay === 'ring' || lay === 'tree') pos.slice(1).forEach(p => deco += `<line class="ln" x1="${pos[0][0]}" y1="${pos[0][1]}" x2="${p[0]}" y2="${p[1]}"/>`);
+  if (lay === 'road' || lay === 'ladder') { let d = `M${pos[0]}`; for (let i = 1; i < pos.length; i++) { const [x0, y0] = pos[i - 1], [x1, y1] = pos[i], mx = (x0 + x1) / 2; d += ` C${mx},${y0} ${mx},${y1} ${x1},${y1}`; }
+    deco += `<path class="road" d="${d}"/><path class="ln" d="${d}"/>`; }
+  if (lay === 'pyramid') deco += `<path class="tile" opacity=".55" d="M170,14 L318,${H - 10} L22,${H - 10} Z"/>`;
+  if (lay === 'puzzle') pos.slice(1).forEach(p => deco += `<rect class="tile" x="${p[0] - 70}" y="${p[1] - 40}" width="140" height="80" rx="18"/>`);
+  const blobs = [0, 1, 2].map(i => `<circle class="blob" style="animation-delay:-${i * 4}s" cx="${(r() * W) | 0}" cy="${(r() * H) | 0}" r="${40 + r() * 40 | 0}" fill="var(--${hue}-b)" opacity=".55"/>`).join('');
+  const big = i => i === 0 && lay !== 'road' && lay !== 'ladder';
+  const pts = parts.map(([e, l], i) => { const R = big(i) ? 25 : 19, [x, y] = pos[i];
+    return `<g class="pt${i === hl ? ' on' : ''}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><g class="fl" style="--d:-${(i * .7).toFixed(1)}s">
+      <circle class="halo" r="${R + 5}"/><circle class="bub" r="${R}"/><text class="em" font-size="${R * 1.05}">${e}</text>
+      <text class="lb" y="${R + 13}">${l}</text></g></g>`; }).join('');
+  return `<svg class="scene${hl != null ? ' hl' : ''}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${T[ti][0]}">
+    <rect width="${W}" height="${H}" fill="var(--${hue}-a)"/>${blobs}${deco}${pts}</svg>`;
+}
+
+// ---------- экраны ----------
+let st = null; // текущая сессия вопросов
+const bar = (title, back = 'home()') => `<div class="top"><button class="back" onclick="${back}" aria-label="Назад">‹</button><div class="t">${title}</div><span class="chip">Серия ${S.streak}</span></div>`;
+const show = html => { app.innerHTML = `<div class="screen">${html}</div>`; window.scrollTo(0, 0); };
+
+function home() {
+  st = null;
+  const seen = Object.keys(S.seen).length, wrong = Object.keys(S.wrong).length, passed = Object.values(S.best).filter(b => b >= TICKET - 2).length;
+  const m = S.mar ? `продолжить с ${S.mar.i + 1}-го` : `все ${Q.length} вопросов подряд`;
+  show(`<div class="hero"><span class="chip">Серия ${S.streak} подряд</span><h1>Административное право</h1><p>36 тем · ${TERMS.length} определений · ${Q.length} вопросов</p></div>
+  <div class="stats"><div class="stat"><b>${seen}</b><span>вопросов пройдено</span></div><div class="stat"><b>${passed}/${TICKETS.length}</b><span>билетов сдано</span></div><div class="stat"><b>${wrong}</b><span>ошибок к разбору</span></div></div>
+  <div class="modes">
+    <button class="mode" style="--i:0" onclick="tickets()"><span class="ic" style="background:var(--sage-soft)">🎫</span><span><b>Билеты</b><small>${TICKETS.length} билетов по ${TICKET} вопросов</small></span></button>
+    <button class="mode" style="--i:1" onclick="marathon()"><span class="ic" style="background:var(--blue-soft)">🏃</span><span><b>Марафон</b><small>${m}</small></span></button>
+    <button class="mode" style="--i:2" onclick="mistakes()"><span class="ic" style="background:var(--rose-soft)">🩹</span><span><b>Мои ошибки</b><small>${wrong ? wrong + ' вопросов на повтор' : 'пока пусто — так держать'}</small></span></button>
+    <button class="mode" style="--i:3" onclick="notes()"><span class="ic" style="background:var(--sand-a)">📖</span><span><b>Конспект</b><small>36 карточек с определениями</small></span></button>
+  </div>`);
+}
+
+function tickets() {
+  show(bar('Билеты') + `<div class="grid">${TICKETS.map((_, i) => { const b = S.best[i];
+    const c = b == null ? '' : b >= TICKET - 2 ? 'pass' : 'fail';
+    return `<button class="tk ${c}" style="--i:${i}" onclick="startTicket(${i})"><b>${i + 1}</b><small>${b == null ? 'не решён' : b + '/' + TICKETS[i].length}</small></button>`; }).join('')}</div>`);
+}
+function startTicket(i) { run({ mode: 'ticket', n: i, ids: TICKETS[i], title: `Билет ${i + 1}` }); }
+function marathon() {
+  if (!S.mar) { S.mar = { ids: shuffle(Q.map(q => q.id)), i: 0, ok: 0 }; save(); }
+  run({ mode: 'mar', ids: S.mar.ids, i: S.mar.i, title: 'Марафон' });
+}
+function mistakes() {
+  const ids = shuffle(Object.keys(S.wrong).filter(id => QBY[id]));
+  if (!ids.length) return show(bar('Мои ошибки') + `<div class="empty"><div style="font-size:48px">🌿</div><p>Ошибок нет. Когда ошибётесь, вопрос появится здесь и исчезнет после верного ответа.</p></div>`);
+  run({ mode: 'mist', ids, title: 'Мои ошибки' });
+}
+
+function run(o) { st = Object.assign({ i: 0, res: [] }, o); ask(); }
+function ask() {
+  const q = QBY[st.ids[st.i]], t = q.term;
+  st.q = q; st.opts = shuffle(opts(q)); st.done = false;
+  const prog = st.mode === 'ticket'
+    ? `<div class="dots">${st.ids.map((_, k) => `<i class="${k === st.i ? 'cur' : st.res[k] === true ? 'ok' : st.res[k] === false ? 'no' : ''}"></i>`).join('')}</div>`
+    : `<div class="bar"><i style="width:${(st.i / st.ids.length * 100).toFixed(1)}%"></i></div>`;
+  const qtext = q.type === 'a'
+    ? `<h2 class="q">Выберите точное определение: «${t.name}»</h2>`
+    : `<h2 class="q">Какому понятию соответствует определение?</h2><p class="quote">${t.v.correct}</p>`;
+  show(bar(`${st.title} · ${st.i + 1} из ${st.ids.length}`) + prog +
+    `<div class="card">${scene(t.ti, t.p)}<div class="qbody"><div class="topic">Тема ${t.ti + 1} · ${T[t.ti][0]}</div>${qtext}</div></div>
+    <div class="opts">${st.opts.map((x, k) => `<button class="opt" style="--i:${k}" onclick="pick(${k})">${x.text}</button>`).join('')}</div><div id="fb"></div>`);
+}
+
+function theory(ti) { return byTopic(ti).map(x => `<p><b>${x.name}</b><br>${x.v.marked}</p>`).join(''); }
+function pick(k) {
+  if (st.done) return; st.done = true;
+  const o = st.opts[k], q = st.q, t = q.term, ok = !!o.ok;
+  S.seen[q.id] = 1;
+  if (ok) { S.streak++; delete S.wrong[q.id]; } else { S.streak = 0; S.wrong[q.id] = 1; }
+  st.res[st.i] = ok;
+  if (st.mode === 'mar') { S.mar.i = st.i + 1; if (ok) S.mar.ok++; }
+  save();
+  document.querySelectorAll('.opt').forEach((b, j) => { b.disabled = true; b.classList.add(st.opts[j].ok ? 'ok' : j === k ? 'no' : 'dim'); });
+  document.querySelector('.chip').textContent = `Серия ${S.streak}`;
+  let html;
+  if (ok) html = `<div class="fb ok"><h3>Верно ✓</h3><p class="mn">💡 ${t.m}</p></div>`;
+  else {
+    const why = q.type === 'a'
+      ? `<p>В этом варианте подменено ключевое слово: <s>${o.w.now}</s> вместо <mark>${o.w.was}</mark>.</p>`
+      : `<p>Вы выбрали «${o.text}». Это другое понятие:<br><i>${o.other.v.correct}</i></p><p>Правильный ответ: <b>${t.name}</b>.</p>`;
+    html = `<div class="fb no"><h3>Неверно</h3>${why}<h4>Запомните определение</h4><p><b>${t.name}</b><br>${t.v.marked}</p>
+      <p class="mn">💡 ${t.m}</p><details class="th"><summary>Теория: тема ${t.ti + 1}</summary>${theory(t.ti)}</details></div>`;
+  }
+  const last = st.i + 1 >= st.ids.length;
+  document.getElementById('fb').innerHTML = html + `<div class="next"><button class="btn" onclick="next()">${last ? 'Итог' : 'Дальше →'}</button></div>`;
+  setTimeout(() => document.getElementById('fb')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+  if (ok && S.streak % 20 === 0) egg();
+}
+function next() { if (st.i + 1 < st.ids.length) { st.i++; ask(); } else result(); }
+
+function result() {
+  const ok = st.res.filter(Boolean).length, n = st.res.filter(x => x != null).length;
+  let extra = '';
+  if (st.mode === 'ticket') { S.best[st.n] = Math.max(S.best[st.n] ?? 0, ok); extra = ok >= st.ids.length - 2 ? 'Билет сдан 🌿' : 'Не больше 2 ошибок, чтобы сдать'; }
+  if (st.mode === 'mar') { extra = `Весь марафон: ${S.mar.ok} из ${Q.length}`; S.mar = null; }
+  save();
+  const again = st.mode === 'ticket' ? `startTicket(${st.n})` : st.mode === 'mar' ? 'marathon()' : 'mistakes()';
+  show(bar('Итог') + `<div class="res"><div class="big">${ok}/${n}</div><p>${extra}</p>
+    <button class="btn" onclick="${again}">Ещё раз</button>
+    ${Object.keys(S.wrong).length ? '<button class="btn soft" onclick="mistakes()">Разобрать ошибки</button>' : ''}
+    <button class="btn soft" onclick="${st.mode === 'ticket' ? 'tickets()' : 'home()'}">${st.mode === 'ticket' ? 'К билетам' : 'На главную'}</button></div>`);
+}
+
+function notes() {
+  show(bar('Конспект') + T.map((t, ti) => `<div class="flip" style="--i:${ti}" onclick="this.classList.toggle('on')">
+    <div class="in"><div class="face f">${scene(ti, null)}<div class="qbody"><div class="topic">Тема ${ti + 1}</div><h3>${t[0]}</h3><div class="hint">Нажмите, чтобы перевернуть</div></div></div>
+    <div class="face b"><div class="topic" style="margin-bottom:10px">Тема ${ti + 1}</div>${byTopic(ti).map(x => `<div class="term"><b>${x.name}</b>${x.v.marked}<div class="mn">💡 ${x.m}</div></div>`).join('')}</div></div></div>`).join(''));
+}
+
+function egg() {
+  const d = document.createElement('div'); d.className = 'egg';
+  d.innerHTML = `<div class="msg"><h2 class="serif">Любимая Женщина</h2><p>${S.streak} верных ответов подряд 🤍<br>нажмите, чтобы продолжить</p></div>` +
+    Array.from({ length: 26 }, () => `<span class="heart" style="left:${Math.random() * 100}%;animation-duration:${4 + Math.random() * 4}s;animation-delay:${Math.random() * 2.5}s;font-size:${18 + Math.random() * 22}px">${['🤍', '💚', '🩷', '💛'][Math.random() * 4 | 0]}</span>`).join('');
+  d.onclick = () => d.remove();
+  document.body.appendChild(d);
+}
+
+home();
+</script>
+</body>
+</html>
