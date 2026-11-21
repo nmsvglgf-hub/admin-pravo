@@ -37,7 +37,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-
 @keyframes in{from{opacity:0;transform:translateY(14px)}}
 .top{display:flex;align-items:center;gap:10px;min-height:44px;margin-bottom:8px}
 .back{width:44px;height:44px;border-radius:50%;background:var(--surface);box-shadow:var(--shadow);font-size:22px;display:grid;place-items:center}
-.top .t{flex:1;font-weight:600;font-size:16px;color:var(--muted)}
+.top .t{flex:1;min-width:0;font-weight:600;font-size:16px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .chip,.back{flex:none}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:var(--sage-soft);color:var(--ink);font-size:14px;font-weight:600}
 .hero h1{font-size:32px;line-height:1.1;margin:18px 0 6px}
 .hero p{color:var(--muted);margin:0 0 18px}
@@ -89,7 +90,7 @@ details{margin-top:10px;background:var(--surface);border-radius:14px;padding:10p
 summary{font-weight:600;cursor:pointer}
 .th p{font-size:15px}
 .next{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-  background:linear-gradient(transparent,var(--bg) 30%);display:flex;justify-content:center;animation:up .35s both}
+  background:var(--bg);box-shadow:0 -8px 20px var(--bg);display:flex;justify-content:center;animation:up .35s both;z-index:10}
 @keyframes up{from{transform:translateY(100%)}}
 .btn{width:100%;max-width:528px;padding:16px;border-radius:18px;background:var(--ink);color:var(--bg);font-weight:600;font-size:17px;box-shadow:var(--shadow)}
 .btn.soft{background:var(--surface);color:var(--ink)}
@@ -98,17 +99,22 @@ summary{font-weight:600;cursor:pointer}
 .res .btn{margin-top:10px}
 .empty{text-align:center;color:var(--muted);padding:40px 12px}
 /* конспект */
-.flip{perspective:1200px;margin-bottom:14px;animation:in .45s both;animation-delay:calc(var(--i)*40ms)}
-.flip .in{display:grid;transition:transform .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
-.flip.on .in{transform:rotateY(180deg)}
-.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
-.face.f{display:flex;flex-direction:column;justify-content:center}
-.face.b{transform:rotateY(180deg);padding:16px}
-.face h3{margin:0;font-size:19px;line-height:1.25}
-.face .hint{font-size:13px;color:var(--muted);margin-top:4px}
-.face .term{margin:0 0 12px;font-size:15px}
-.face .term b{display:block;font-size:16px;margin-bottom:2px}
-.face .term .mn{margin-top:6px;font-size:14px}
+/* лёгкие карточки: одна открытая за раз, без постоянного 3D — иначе Safari на iPhone падает по памяти */
+.nhint{color:var(--muted);font-size:14px;margin:0 0 12px}
+.nt{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;animation:in .4s both;animation-delay:calc(min(var(--i),12)*30ms)}
+.nt .hd{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px}
+.nt .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;flex:none;background:var(--sage-soft)}
+.nt .hd>span:nth-child(2){flex:1;min-width:0}
+.nt h3{margin:2px 0 0;font-size:16px;line-height:1.25}
+.nt .chev{flex:none;font-size:22px;color:var(--muted);transition:transform .3s}
+.nt.open .chev{transform:rotate(90deg)}
+.nt .bd{padding:0 14px 14px}
+.nt .bd .scene{border-radius:16px;margin-bottom:12px}
+.nt.turn{animation:turn .5s ease both}
+@keyframes turn{50%{transform:perspective(900px) rotateY(90deg)}}
+.term{margin:0 0 14px;font-size:15px;overflow-wrap:anywhere}
+.term b{display:block;font-size:16px;margin-bottom:2px}
+.term .mn{margin-top:6px;font-size:14px}
 /* сцены */
 .ln{stroke:var(--muted);stroke-opacity:.35;stroke-width:1.5;stroke-dasharray:4 5;fill:none;animation:dash 6s linear infinite}
 @keyframes dash{to{stroke-dashoffset:-90}}
@@ -143,7 +149,7 @@ summary{font-weight:600;cursor:pointer}
 </head>
 <body>
 <div id="app"></div>
-<script src="data.js"></script>
+<script src="data.js?v=2"></script>
 <script>
 const app = document.getElementById('app');
 const KEY = 'ap-tickets-v1';
@@ -187,9 +193,13 @@ function opts(q) {
 const W = 340, H = 196, HUES = ['sage', 'sand', 'mist', 'rosy', 'lav'];
 const LAY = {
   ring: n => [[170, 92], ...Array.from({ length: n - 1 }, (_, k) => { const a = -Math.PI / 2 + 2 * Math.PI * k / (n - 1); return [170 + 125 * Math.cos(a), 90 + 62 * Math.sin(a)]; })],
-  tree: n => [[170, 36], ...Array.from({ length: n - 1 }, (_, k) => [40 + 260 * (k + .5) / (n - 1), n >= 5 ? 112 + (k % 2) * 40 : 134])],
+  // 4+ детей — два ровных ряда, чтобы подписи не ложились на кружки
+  tree: n => { const m = n - 1, top = m >= 4 ? Math.ceil(m / 2) : m;
+    return [[170, 30], ...Array.from({ length: m }, (_, k) => { const row = k < top ? 0 : 1, c = row ? m - top : top, j = row ? k - top : k;
+      return [40 + 260 * (j + .5) / c, m >= 4 ? (row ? 154 : 96) : 134]; })]; },
   road: n => Array.from({ length: n }, (_, k) => [54 + 232 * k / (n - 1), k % 2 ? 128 : 62]),
-  ladder: n => Array.from({ length: n }, (_, k) => [40 + 260 * k / (n - 1), 150 - 108 * k / (n - 1)]),
+  // подпись справа от ступеньки, у последней — сверху
+  ladder: n => Array.from({ length: n }, (_, k) => [34 + 262 * k / (n - 1), 166 - 128 * k / (n - 1), k === n - 1 ? 'u' : 'r']),
   pyramid: n => { const out = []; let row = 1, left = n, y = 36; while (left > 0) { const c = Math.min(row, left);
     for (let k = 0; k < c; k++) out.push([170 + (k - (c - 1) / 2) * (row === 1 ? 0 : 230 / Math.max(c - 1, 1) * Math.min(1, (c - 1) / 2.2 + .35)), y]);
     left -= c; row++; y += 58; } return out; },
@@ -199,16 +209,17 @@ function scene(ti, hl) {
   const [, lay, parts] = T[ti], pos = LAY[lay](parts.length), hue = HUES[ti % 5], r = rng(ti + 7);
   let deco = '';
   if (lay === 'ring' || lay === 'tree') pos.slice(1).forEach(p => deco += `<line class="ln" x1="${pos[0][0]}" y1="${pos[0][1]}" x2="${p[0]}" y2="${p[1]}"/>`);
-  if (lay === 'road' || lay === 'ladder') { let d = `M${pos[0]}`; for (let i = 1; i < pos.length; i++) { const [x0, y0] = pos[i - 1], [x1, y1] = pos[i], mx = (x0 + x1) / 2; d += ` C${mx},${y0} ${mx},${y1} ${x1},${y1}`; }
+  if (lay === 'road' || lay === 'ladder') { let d = `M${pos[0][0]},${pos[0][1]}`; for (let i = 1; i < pos.length; i++) { const [x0, y0] = pos[i - 1], [x1, y1] = pos[i], mx = (x0 + x1) / 2; d += ` C${mx},${y0} ${mx},${y1} ${x1},${y1}`; }
     deco += `<path class="road" d="${d}"/><path class="ln" d="${d}"/>`; }
   if (lay === 'pyramid') deco += `<path class="tile" opacity=".55" d="M170,14 L318,${H - 10} L22,${H - 10} Z"/>`;
   if (lay === 'puzzle') pos.slice(1).forEach(p => deco += `<rect class="tile" x="${p[0] - 70}" y="${p[1] - 40}" width="140" height="80" rx="18"/>`);
   const blobs = [0, 1, 2].map(i => `<circle class="blob" style="animation-delay:-${i * 4}s" cx="${(r() * W) | 0}" cy="${(r() * H) | 0}" r="${40 + r() * 40 | 0}" fill="var(--${hue}-b)" opacity=".55"/>`).join('');
   const big = i => i === 0 && lay !== 'road' && lay !== 'ladder';
-  const pts = parts.map(([e, l], i) => { const R = big(i) ? 25 : 19, [x, y] = pos[i];
+  const pts = parts.map(([e, l], i) => { const R = big(i) ? 25 : 19, [x, y, lp] = pos[i];
+    const la = lp === 'r' ? `x="${R + 4}" y="4" style="text-anchor:start"` : lp === 'u' ? `y="${-R - 8}"` : `y="${R + 13}"`;
     return `<g class="pt${i === hl ? ' on' : ''}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><g class="fl" style="--d:-${(i * .7).toFixed(1)}s">
       <circle class="halo" r="${R + 5}"/><circle class="bub" r="${R}"/><text class="em" font-size="${R * 1.05}">${e}</text>
-      <text class="lb" y="${R + 13}">${l}</text></g></g>`; }).join('');
+      <text class="lb" ${la}>${l}</text></g></g>`; }).join('');
   return `<svg class="scene${hl != null ? ' hl' : ''}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${T[ti][0]}">
     <rect width="${W}" height="${H}" fill="var(--${hue}-a)"/>${blobs}${deco}${pts}</svg>`;
 }
@@ -239,6 +250,8 @@ function tickets() {
 }
 function startTicket(i) { run({ mode: 'ticket', n: i, ids: TICKETS[i], title: `Билет ${i + 1}` }); }
 function marathon() {
+  // сохранённый марафон мог устареть после обновления вопросов — тогда начинаем заново
+  if (S.mar && (!Array.isArray(S.mar.ids) || S.mar.ids.some(id => !QBY[id]) || !(S.mar.i < S.mar.ids.length))) S.mar = null;
   if (!S.mar) { S.mar = { ids: shuffle(Q.map(q => q.id)), i: 0, ok: 0 }; save(); }
   run({ mode: 'mar', ids: S.mar.ids, i: S.mar.i, title: 'Марафон' });
 }
@@ -304,9 +317,28 @@ function result() {
 }
 
 function notes() {
-  show(bar('Конспект') + T.map((t, ti) => `<div class="flip" style="--i:${ti}" onclick="this.classList.toggle('on')">
-    <div class="in"><div class="face f">${scene(ti, null)}<div class="qbody"><div class="topic">Тема ${ti + 1}</div><h3>${t[0]}</h3><div class="hint">Нажмите, чтобы перевернуть</div></div></div>
-    <div class="face b"><div class="topic" style="margin-bottom:10px">Тема ${ti + 1}</div>${byTopic(ti).map(x => `<div class="term"><b>${x.name}</b>${x.v.marked}<div class="mn">💡 ${x.m}</div></div>`).join('')}</div></div></div>`).join(''));
+  openNote = null;
+  show(bar('Конспект') + `<p class="nhint">Нажмите на тему — карточка перевернётся и покажет определения.</p>` +
+    T.map((t, ti) => `<div class="nt" id="nt${ti}" style="--i:${ti}"><button class="hd" onclick="flipNote(${ti})"><span class="ic">${t[2][0][0]}</span>
+      <span><span class="topic">Тема ${ti + 1}</span><h3>${t[0]}</h3></span><span class="chev">›</span></button><div class="bd" hidden></div></div>`).join(''));
+}
+let openNote = null, flipping = false;
+function flipNote(ti) {
+  const el = document.getElementById('nt' + ti);
+  if (!el || flipping) return;
+  flipping = true;
+  const closing = openNote === ti, shut = c => { if (!c) return; const b = c.querySelector('.bd'); b.hidden = true; b.innerHTML = ''; c.classList.remove('open'); };
+  if (openNote != null && !closing) shut(document.getElementById('nt' + openNote));
+  el.classList.remove('turn'); void el.offsetWidth; el.classList.add('turn');
+  setTimeout(() => {
+    flipping = false;
+    if (!el.isConnected) return; // ушли с экрана во время анимации
+    if (closing) { shut(el); openNote = null; return; }
+    const bd = el.querySelector('.bd');
+    bd.innerHTML = scene(ti, null) + byTopic(ti).map(x => `<div class="term"><b>${x.name}</b>${x.v.marked}<div class="mn">💡 ${x.m}</div></div>`).join('');
+    bd.hidden = false; el.classList.add('open'); openNote = ti;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 250);
 }
 
 function egg() {
